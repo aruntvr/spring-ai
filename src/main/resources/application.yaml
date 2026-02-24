@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: springai
+  ai:
+    ollama:
+      base-url: ${OLLAMA_BASE_URL}
+      chat:
+        model: ${OLLAMA_MODEL}
