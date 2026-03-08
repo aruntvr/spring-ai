@@ -29,18 +29,18 @@ public class ChatController {
     }
 
     @GetMapping("/authors/{author}")
-    public Map<String,Object> authors(@PathVariable String author) {
+    public Map<String, Object> authors(@PathVariable String author) {
         String message = """
-    Generate list of links for the author {author}.
-    Include the author name as the key and social links as the value.
-    If unknown, say "I don't know".
-    {format}
-    """;
-        var map = new MapOutputConverter();
-        var pt  = new PromptTemplate(message);
-        var p   = pt.create(Map.of("author", author, "format", map.getFormat()));
+                Generate list of links for the author {author}.
+                Include the author name as the key and social links as the value.
+                If unknown, say "I don't know".
+                {format}
+                """;
+        MapOutputConverter mapOutputConverter = new MapOutputConverter();
+        PromptTemplate pt = new PromptTemplate(message);
+        var p = pt.create(Map.of("author", author, "format", mapOutputConverter.getFormat()));
 
-        return chatClientService.messageMapResponse(p);
+        return mapOutputConverter.convert(chatClientService.sendMessage(p));
     }
 
 }
